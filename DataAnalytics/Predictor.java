@@ -1,3 +1,5 @@
+package csproject1;
+
 import java.util.ArrayList;
 
 public abstract class Predictor {
@@ -6,8 +8,8 @@ public abstract class Predictor {
 
 	public abstract String test(DataPoint data);
 
-	public abstract Double getAccuracy(ArrayList<DataPoint> data);
+	public abstract double getAccuracy(ArrayList<DataPoint> data);
 
-	public abstract Double getPrecision(ArrayList<DataPoint> data);
+	public abstract double getPrecision(ArrayList<DataPoint> data);
 
 }

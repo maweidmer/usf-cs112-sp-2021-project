@@ -1,3 +1,4 @@
+package csproject1;
 
 public class DataPoint {
 
@@ -18,11 +19,11 @@ public class DataPoint {
 	}
 
 	public void setF1(double in1) {
-		this.f1 = in;
+		this.f1 = in1;
 	}
 
 	public void setF2(double in2) {
-		this.f2 = in;
+		this.f2 = in2;
 	}
 
 	public void setLabel(String labelIn) {
