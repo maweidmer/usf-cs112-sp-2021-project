@@ -1,4 +1,4 @@
-package csproject2;
+package csproject3;
 
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -30,11 +30,8 @@ public class Driver {
 		ArrayList<DataPoint> passengers = predictor.readData("titanic.csv");
 		
 		String accuracy = "";
-
 		accuracy = accuracy + String.format("%.2f", predictor.getAccuracy(passengers)) + "%";
-		
 		String precision = "";
-		
 		precision = precision + String.format("%.2f", predictor.getPrecision(passengers))  + "%";
 
 		// A JFrame is a window.
