@@ -48,25 +48,25 @@ public class Graph extends JPanel {
 	private int numYGridLines = 6;
 	private int padding = 40;
 
-	private ArrayList<DataPoint> data;
+	private static ArrayList<DataPoint> data;
 
 	// TODO: Add a private KNNPredictor variable
-	private KNNPredictor predictor;
+	private static KNNPredictor predictor;
 	private static String accuracy;
 	private static String precision;
+	private static Graph mainPanel;
 
 	/**
 	 * Constructor method
 	 */
 	public Graph(int K, String fileName) {
 		// Generate random data point
-		List<DataPoint> data = new ArrayList<>();
 
 		predictor = new KNNPredictor(K);
 
 		this.data = predictor.readData(fileName);
-		accuracy = String.format("%.2f", predictor.getAccuracy(this.data)) + "%";
-		precision = String.format("%.2f", predictor.getPrecision(this.data)) + "%";
+		accuracy = String.format("%.2f", predictor.getAccuracy(data)) + "%";
+		precision = String.format("%.2f", predictor.getPrecision(data)) + "%";
 
 		// TODO: Remove the above logic where random data is generated
 		// TODO: instantiate the KNNPredictor variable
@@ -242,13 +242,13 @@ public class Graph extends JPanel {
 	private static void createAndShowGui(int K, String fileName) {
 
 		/* Main panel */
-		Graph mainPanel = new Graph(K, fileName);
+		mainPanel = new Graph(K, fileName);
 
 		// Feel free to change the size of the panel
 		mainPanel.setPreferredSize(new Dimension(900, 700));
 
 		/* creating the frame */
-		JFrame frame = new JFrame("CS 112 Lab Part 3");
+		JFrame frame = new JFrame("CS 112 Lab Part 4");
 		Container contentPane = frame.getContentPane();
 
 		contentPane.setLayout(new GridBagLayout());
@@ -261,19 +261,21 @@ public class Graph extends JPanel {
 		c.gridwidth = 2;
 		contentPane.add(mainPanel, c);
 
+		Label accprec = new Label("<html>Accuracy: " + accuracy + "<br/>Precision: " + precision + "</html>");
 		c.gridx = 2;
 		c.gridy = 1;
 		c.gridheight = 1;
 		c.gridwidth = 1;
 		c.ipadx = 40;
-		contentPane.add(new Label("<html>Accuracy: " + accuracy + "<br/>Precision: " + precision + "</html>"), c);
+		contentPane.add(accprec, c);
 
+		Label sliderLabel = new Label("Choose the majority value");
 		c.gridx = 0;
 		c.gridy = 3;
 		c.ipady = 40;
 		c.insets = new Insets(20, 20, 20, 20);
 		c.anchor = c.LINE_END;
-		contentPane.add(new Label("Choose the majority value"), c);
+		contentPane.add(sliderLabel, c);
 
 		JSlider kSlider = new JSlider(2, 25, 5);
 		kSlider.setMajorTickSpacing(5);
@@ -293,8 +295,14 @@ public class Graph extends JPanel {
 		runTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int sliderVal = (kSlider.getValue() * 2) + 1;
+				predictor = new KNNPredictor(sliderVal);
+				data = predictor.readData(fileName);
+				accuracy = String.format("%.2f", predictor.getAccuracy(data)) + "%";
+				precision = String.format("%.2f", predictor.getPrecision(data)) + "%";
+				accprec.setText("<html>Accuracy: " + accuracy + "<br/>Precision: " + precision + "</html>");
+				mainPanel.validate();
+				mainPanel.repaint();
 
-				createAndShowGui(sliderVal, fileName);
 			}
 		});
 		contentPane.add(runTest, c);
