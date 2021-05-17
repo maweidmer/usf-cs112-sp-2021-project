@@ -12,12 +12,17 @@ import java.awt.GridBagConstraints;
 import java.awt.Label;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 
 public class Graph extends JPanel {
@@ -245,16 +250,54 @@ public class Graph extends JPanel {
 		/* creating the frame */
 		JFrame frame = new JFrame("CS 112 Lab Part 3");
 		Container contentPane = frame.getContentPane();
-		
+
 		contentPane.setLayout(new GridBagLayout());
-		
+
 		GridBagConstraints c = new GridBagConstraints();
 
-		contentPane.add(mainPanel);
-		
-		c.gridx = 1;
+		c.gridx = 0;
 		c.gridy = 0;
-		contentPane.add(new Label("Accuracy: " + accuracy + " Precision: " + precision), c);
+		c.gridheight = 2;
+		c.gridwidth = 2;
+		contentPane.add(mainPanel, c);
+
+		c.gridx = 2;
+		c.gridy = 1;
+		c.gridheight = 1;
+		c.gridwidth = 1;
+		c.ipadx = 40;
+		contentPane.add(new Label("<html>Accuracy: " + accuracy + "<br/>Precision: " + precision + "</html>"), c);
+
+		c.gridx = 0;
+		c.gridy = 3;
+		c.ipady = 40;
+		c.insets = new Insets(20, 20, 20, 20);
+		c.anchor = c.LINE_END;
+		contentPane.add(new Label("Choose the majority value"), c);
+
+		JSlider kSlider = new JSlider(2, 25, 5);
+		kSlider.setMajorTickSpacing(5);
+		kSlider.setMinorTickSpacing(1);
+		kSlider.setPaintTicks(true);
+		kSlider.setSnapToTicks(true);
+		c.gridx = 1;
+		c.gridy = 3;
+		c.anchor = c.LINE_START;
+		c.ipady = 20;
+		contentPane.add(kSlider, c);
+
+		JButton runTest = new JButton("Run Test");
+		c.gridx = 1;
+		c.gridy = 4;
+		c.ipady = 10;
+		runTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int sliderVal = (kSlider.getValue() * 2) + 1;
+
+				createAndShowGui(sliderVal, fileName);
+			}
+		});
+		contentPane.add(runTest, c);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
